@@ -30,16 +30,16 @@ jobs:
       security-events: write
       actions: read
 
-  # Semgrep. Enabled once the shared sast.yml is released (DustyStudy/DustyStudy#76).
-  # sast:
-  #   uses: DustyStudy/DustyStudy/.github/workflows/sast.yml@__BASELINE_SHA__ # baseline-v1
-  #   permissions:
-  #     contents: read
-  #     security-events: write
-  #     actions: read
+  sast:
+    # Semgrep.
+    uses: DustyStudy/DustyStudy/.github/workflows/sast.yml@8d7102c080d965f21ac6ed519ee117c967b08d4e # DustyStudy#76
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
 
   # terraform:
-  #   uses: DustyStudy/DustyStudy/.github/workflows/terraform-ci.yml@__BASELINE_SHA__ # baseline-v1
+  #   uses: DustyStudy/DustyStudy/.github/workflows/terraform-ci.yml@8d7102c080d965f21ac6ed519ee117c967b08d4e # DustyStudy#76
   #   permissions:
   #     contents: read
   #     id-token: write   # OIDC for the read-only plan
