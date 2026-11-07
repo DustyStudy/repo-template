@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Keeps the SHA pins in .github/workflows current. Add a block like this
+  # one for each ecosystem the repo uses: pip, npm, terraform, docker, ...
+  # (Dependabot errors on an ecosystem with no manifest, so add them only
+  # once the files exist.)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5

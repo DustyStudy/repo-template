@@ -1,0 +1,5 @@
+# Every path is owned by the maintainer. Workflows and this file are listed
+# explicitly so a later catch-all change can't silently drop them.
+*                   @DustyStudy
+/.github/           @DustyStudy
+/.github/CODEOWNERS @DustyStudy

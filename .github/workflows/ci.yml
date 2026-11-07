@@ -1,0 +1,49 @@
+name: CI
+
+# Thin caller: the real jobs live in DustyStudy/DustyStudy and are pinned by
+# commit SHA. Dependabot keeps the pins current.
+#
+# Terraform repo? Uncomment the terraform job. It runs fmt, validate,
+# Checkov and a read-only plan; it never applies.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    # Gitleaks, Checkov, Trivy and zizmor.
+    uses: DustyStudy/DustyStudy/.github/workflows/security-scan.yml@1e19cc9af9614ed0231da72f71886276fe8150b3 # security-scan-v3
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+  # Semgrep. Enabled once the shared sast.yml is released (DustyStudy/DustyStudy#76).
+  # sast:
+  #   uses: DustyStudy/DustyStudy/.github/workflows/sast.yml@__BASELINE_SHA__ # baseline-v1
+  #   permissions:
+  #     contents: read
+  #     security-events: write
+  #     actions: read
+
+  # terraform:
+  #   uses: DustyStudy/DustyStudy/.github/workflows/terraform-ci.yml@__BASELINE_SHA__ # baseline-v1
+  #   permissions:
+  #     contents: read
+  #     id-token: write   # OIDC for the read-only plan
+  #   with:
+  #     working-directory: terraform
+  #     plan-role-arn: ${{ vars.AWS_PLAN_ROLE_ARN }}   # arn:aws-us-gov:... for GovCloud
+  #     aws-region: us-east-1                          # us-gov-west-1 / us-gov-east-1 for GovCloud
